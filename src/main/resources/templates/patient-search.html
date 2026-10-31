@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments :: head('患者検索')}">
+  </head>
+  <body>
+    <header th:replace="~{fragments :: header}">
+    </header>
+    <nav th:replace="~{fragments :: nav}">
+    </nav>
+    <main>
+      <div class="page-heading">
+        <h1>
+          患者検索
+        </h1>
+        <p th:text="${purpose == 'register' ? '薬歴を登録する患者を選択してください。' : (purpose == 'history' ? '薬歴を確認する患者を選択してください。' : '患者名の一部を入力して検索してください。')}">
+        </p>
+      </div>
+      <section class="panel">
+        <form method="get" th:action="@{/patients/search}">
+          <input type="hidden" name="purpose" th:value="${purpose}">
+          <label for="search-name">
+            患者名
+          </label>
+          <div class="search-row">
+            <input id="search-name" type="search" name="name" th:value="${name}" maxlength="100" required placeholder="例：山田">
+            <button class="button" type="submit">
+              検索する
+            </button>
+          </div>
+          <p class="field-error" th:if="${searchError}" th:text="${searchError}">
+          </p>
+        </form>
+      </section>
+      <section th:if="${searched}" class="results">
+        <h2>
+          検索結果
+          <span class="count" th:text="${#lists.size(patients)} + '件'">
+          </span>
+        </h2>
+        <div class="empty" th:if="${#lists.isEmpty(patients)}">
+          該当する患者が見つかりません。検索する名前を変更してください。
+        </div>
+        <div class="table-wrap" th:unless="${#lists.isEmpty(patients)}">
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">
+                  患者ID
+                </th>
+                <th scope="col">
+                  患者名
+                </th>
+                <th scope="col">
+                  生年月日
+                </th>
+                <th scope="col">
+                  操作
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr th:each="patient : ${patients}">
+                <td th:text="${patient.id}">
+                </td>
+                <td class="patient-name" th:text="${patient.name}">
+                </td>
+                <td th:text="${patient.birthDate}">
+                </td>
+                <td>
+                  <div class="actions">
+                    <a class="button small" th:href="@{/patients/{id}/medications/new(id=${patient.id})}">
+                      薬歴登録
+                    </a>
+                    <a class="button secondary small" th:href="@{/patients/{id}/medications(id=${patient.id})}">
+                      薬歴確認
+                    </a>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <a class="back" th:href="@{/}">
+        ← ホームへ戻る
+      </a>
+    </main>
+    <footer th:replace="~{fragments :: footer}">
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments :: head('過去の薬歴')}">
+  </head>
+  <body>
+    <header th:replace="~{fragments :: header}">
+    </header>
+    <nav th:replace="~{fragments :: nav}">
+    </nav>
+    <main>
+      <div class="page-heading heading-row">
+        <div>
+          <h1>
+            過去の薬歴
+          </h1>
+          <p>
+            処方日の新しい順に表示しています。
+          </p>
+        </div>
+        <a class="button" th:href="@{/patients/{id}/medications/new(id=${patient.id})}">
+          ＋ 新規薬歴登録
+        </a>
+      </div>
+      <div th:replace="~{fragments :: success}">
+      </div>
+      <div th:replace="~{fragments :: patient}">
+      </div>
+      <section class="results">
+        <h2>
+          薬歴一覧
+          <span class="count" th:text="${#lists.size(histories)} + '件'">
+          </span>
+        </h2>
+        <div class="empty" th:if="${#lists.isEmpty(histories)}">
+          薬歴が登録されていません
+        </div>
+        <div class="table-wrap" th:unless="${#lists.isEmpty(histories)}">
+          <table class="history-table">
+            <caption class="sr-only">
+              患者ごとの薬歴一覧。詳細を開くと全文を確認できます。
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">
+                  処方日
+                </th>
+                <th scope="col">
+                  薬剤名
+                </th>
+                <th scope="col">
+                  用法
+                </th>
+                <th scope="col">
+                  用量
+                </th>
+                <th scope="col">
+                  服用日数
+                </th>
+                <th scope="col">
+                  服薬指導内容
+                </th>
+                <th scope="col">
+                  備考
+                </th>
+                <th scope="col">
+                  詳細
+                </th>
+              </tr>
+            </thead>
+            <tbody th:each="history : ${histories}">
+              <tr>
+                <td th:text="${history.prescriptionDate}">
+                </td>
+                <td class="patient-name" th:text="${history.medicineName}">
+                </td>
+                <td class="wrap" th:text="${history.usage}">
+                </td>
+                <td class="wrap" th:text="${history.dosage}">
+                </td>
+                <td th:text="${history.durationDays} + '日'">
+                </td>
+                <td class="wrap preserve" th:text="${history.guidance}">
+                </td>
+                <td class="wrap preserve" th:text="${#strings.isEmpty(history.notes) ? '—' : history.notes}">
+                </td>
+                <td>
+                  <details>
+                    <summary>
+                      詳細
+                    </summary>
+                    <dl class="detail">
+                      <dt>
+                        処方日
+                      </dt>
+                      <dd th:text="${history.prescriptionDate}">
+                      </dd>
+                      <dt>
+                        薬剤名
+                      </dt>
+                      <dd th:text="${history.medicineName}">
+                      </dd>
+                      <dt>
+                        用法・用量
+                      </dt>
+                      <dd th:text="${history.usage} + ' / ' + ${history.dosage}">
+                      </dd>
+                      <dt>
+                        服用日数
+                      </dt>
+                      <dd th:text="${history.durationDays} + '日'">
+                      </dd>
+                      <dt>
+                        服薬指導内容
+                      </dt>
+                      <dd class="preserve" th:text="${history.guidance}">
+                      </dd>
+                      <dt>
+                        備考
+                      </dt>
+                      <dd class="preserve" th:text="${history.notes}">
+                      </dd>
+                    </dl>
+                  </details>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <a class="back" th:href="@{/}">
+        ← ホームへ戻る
+      </a>
+    </main>
+    <footer th:replace="~{fragments :: footer}">
+    </footer>
+  </body>
+</html>

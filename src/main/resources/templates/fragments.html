@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head th:fragment="head(title)">
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/svg+xml" th:href="@{/favicon.svg}">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title} + ' | 薬歴管理システム'">
+      薬歴管理システム
+    </title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <script defer th:src="@{/js/app.js}">
+    </script>
+  </head>
+  <body>
+    <header th:fragment="header">
+      <div class="header-inner">
+        <a class="brand" th:href="@{/}">
+          <span class="brand-icon" aria-hidden="true">
+            ＋
+          </span>
+          薬歴管理システム
+        </a>
+        <span class="environment">
+          学習・開発用
+        </span>
+      </div>
+    </header>
+    <nav th:fragment="nav" aria-label="メインナビゲーション">
+      <a th:href="@{/}">
+        ホーム
+      </a>
+      <a th:href="@{/patients/search}">
+        患者検索
+      </a>
+      <a th:href="@{/patients/search(purpose='register')}">
+        薬歴登録
+      </a>
+      <a th:href="@{/patients/search(purpose='history')}">
+        過去の薬歴確認
+      </a>
+    </nav>
+    <div th:fragment="success" th:if="${success}" class="notice success" role="status" th:text="${success}">
+    </div>
+    <section th:fragment="patient" class="patient-summary" aria-label="選択した患者">
+      <div>
+        <span class="muted">
+          患者名
+        </span>
+        <strong th:text="${patient.name}">
+        </strong>
+      </div>
+      <div>
+        <span class="muted">
+          生年月日
+        </span>
+        <span th:text="${#temporals.format(patient.birthDate, 'yyyy年MM月dd日')}">
+        </span>
+      </div>
+      <div>
+        <span class="muted">
+          患者ID
+        </span>
+        <span th:text="${patient.id}">
+        </span>
+      </div>
+    </section>
+    <footer th:fragment="footer">
+      <p>
+        架空のテストデータのみ使用してください。
+      </p>
+      <p>
+        薬歴管理システム · 学習・開発用
+      </p>
+    </footer>
+  </body>
+</html>

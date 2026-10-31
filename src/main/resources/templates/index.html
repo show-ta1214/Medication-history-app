@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+  <head th:replace="~{fragments :: head('ホーム')}">
+  </head>
+  <body>
+    <header th:replace="~{fragments :: header}">
+    </header>
+    <nav th:replace="~{fragments :: nav}">
+    </nav>
+    <main>
+      <div class="page-heading">
+        <h1>
+          患者情報と薬歴を、ひとつに。
+        </h1>
+        <p>
+          患者の登録から、日々の薬歴の記録・確認まで。
+        </p>
+      </div>
+      <div th:replace="~{fragments :: success}">
+      </div>
+      <div class="home-layout">
+        <section class="panel">
+          <div class="section-title">
+            <span class="step">
+              01
+            </span>
+            <div>
+              <h2>
+                患者新規登録
+              </h2>
+              <p>
+                患者の基本情報を登録します。
+              </p>
+            </div>
+          </div>
+          <form th:action="@{/patients}" th:object="${patientForm}" method="post">
+            <div class="field">
+              <label for="name">
+                患者名
+                <span class="required">
+                  必須
+                </span>
+              </label>
+              <input id="name" type="text" th:field="*{name}" maxlength="100" autocomplete="name" placeholder="例：山田 花子" required>
+              <p class="field-error" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+              </p>
+            </div>
+            <div class="field">
+              <label for="birthDate">
+                生年月日
+                <span class="required">
+                  必須
+                </span>
+              </label>
+              <input id="birthDate" type="date" th:field="*{birthDate}" data-birth-date required>
+              <p class="field-error" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}">
+              </p>
+            </div>
+            <button class="button full" type="submit">
+              患者を登録する
+            </button>
+          </form>
+        </section>
+        <aside class="workflow">
+          <h2>
+            登録済みの患者をお探しですか？
+          </h2>
+          <p>
+            患者を検索し、薬歴の登録や確認へ進めます。
+          </p>
+          <a class="workflow-link" th:href="@{/patients/search}">
+            <span>
+              <strong>
+                患者を名前で検索
+              </strong>
+              <small>
+                名前の一部から検索できます
+              </small>
+            </span>
+            <span aria-hidden="true">
+              →
+            </span>
+          </a>
+          <a class="workflow-link" th:href="@{/patients/search(purpose='register')}">
+            <span>
+              <strong>
+                薬歴を登録
+              </strong>
+              <small>
+                患者を選んで新しい記録を追加
+              </small>
+            </span>
+            <span aria-hidden="true">
+              →
+            </span>
+          </a>
+          <a class="workflow-link" th:href="@{/patients/search(purpose='history')}">
+            <span>
+              <strong>
+                過去の薬歴を確認
+              </strong>
+              <small>
+                患者ごとの記録を時系列で確認
+              </small>
+            </span>
+            <span aria-hidden="true">
+              →
+            </span>
+          </a>
+        </aside>
+      </div>
+    </main>
+    <footer th:replace="~{fragments :: footer}">
+    </footer>
+  </body>
+</html>

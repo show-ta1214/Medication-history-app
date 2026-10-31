@@ -1,0 +1,589 @@
+:root {
+    --blue:#1765bd;
+    --dark:#18324f;
+    --muted:#61748a;
+    --line:#dce5ee;
+    --bg:#f3f6fa
+}
+
+* {
+    box-sizing:border-box
+}
+
+body {
+    margin:0;
+    background:var(--bg);
+    color:var(--dark);
+    font-family:"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;
+    font-size:15px;
+    line-height:1.75
+}
+
+a {
+    color:var(--blue)
+}
+
+header {
+    background:white;
+    border-bottom:1px solid var(--line)
+}
+
+.header-inner {
+    max-width:1140px;
+    margin:auto;
+    padding:22px 30px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:15px
+}
+
+.brand {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:var(--dark);
+    font-size:21px;
+    font-weight:700
+}
+
+.brand-icon {
+    background:var(--blue);
+    color:white;
+    width:36px;
+    height:36px;
+    display:grid;
+    place-items:center;
+    border-radius:9px;
+    font-size:29px;
+    line-height:1
+}
+
+.environment {
+    color:var(--muted);
+    font-size:12px
+}
+
+nav {
+    display:flex;
+    gap:28px;
+    max-width:1140px;
+    margin:auto;
+    padding:16px 30px;
+    border-bottom:1px solid var(--line)
+}
+
+nav a {
+    font-size:14px;
+    text-decoration:none;
+    color:var(--muted);
+    white-space:nowrap
+}
+
+nav a:hover,nav a[aria-current=page] {
+    color:var(--blue)
+}
+
+main {
+    max-width:1140px;
+    margin:auto;
+    padding:40px 30px 60px;
+    min-height:70vh
+}
+
+h1,h2,p {
+    margin-top:0
+}
+
+h1 {
+    font-size:28px;
+    line-height:1.5;
+    margin-bottom:8px;
+    letter-spacing:.02em
+}
+
+h2 {
+    font-size:19px;
+    margin-bottom:12px
+}
+
+.page-heading {
+    margin-bottom:30px
+}
+
+.page-heading p,.section-title p,.workflow>p {
+    color:var(--muted);
+    margin-bottom:0
+}
+
+.home-layout {
+    display:grid;
+    grid-template-columns:1.1fr 1fr;
+    gap:42px;
+    align-items:start
+}
+
+.panel {
+    background:white;
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:30px;
+    box-shadow:0 3px 14px #18324f04
+}
+
+.section-title {
+    display:flex;
+    gap:16px;
+    margin-bottom:28px
+}
+
+.section-title h2 {
+    margin-bottom:3px
+}
+
+.section-title p {
+    font-size:13px
+}
+
+.step {
+    font-size:13px;
+    color:var(--blue);
+    background:#eaf3ff;
+    border-radius:8px;
+    width:38px;
+    height:38px;
+    display:grid;
+    place-items:center;
+    flex-shrink:0
+}
+
+.workflow {
+    padding:20px 0
+}
+
+.workflow>p {
+    font-size:14px;
+    margin-bottom:22px
+}
+
+.workflow-link {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:22px 0;
+    border-bottom:1px solid var(--line);
+    text-decoration:none;
+    gap:16px
+}
+
+.workflow-link strong {
+    display:block;
+    font-size:16px
+}
+
+.workflow-link small {
+    color:var(--muted);
+    display:block;
+    margin-top:5px
+}
+
+.workflow-link:hover strong {
+    text-decoration:underline
+}
+
+label {
+    font-size:14px;
+    font-weight:600;
+    display:block;
+    margin-bottom:8px
+}
+
+.field {
+    margin-bottom:22px
+}
+
+.required,.muted {
+    font-weight:400;
+    color:var(--muted)
+}
+
+.required {
+    font-size:11px;
+    color:#536c87;
+    margin-left:6px
+}
+
+.field label .muted {
+    font-size:11px;
+    margin-left:6px
+}
+
+input,textarea {
+    font:inherit;
+    width:100%;
+    border:1px solid #c8d5e3;
+    background:white;
+    border-radius:6px;
+    padding:11px 13px;
+    color:var(--dark);
+    min-height:46px
+}
+
+input::placeholder {
+    color:#8595a7
+}
+
+textarea {
+    resize:vertical
+}
+
+input:focus,textarea:focus {
+    outline:3px solid #d6e8ff;
+    border-color:var(--blue)
+}
+
+:focus-visible {
+    outline:3px solid #8cbcf0;
+    outline-offset:3px
+}
+
+.button {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:11px 22px;
+    min-height:46px;
+    border:1px solid var(--blue);
+    border-radius:6px;
+    background:var(--blue);
+    color:white;
+    text-decoration:none;
+    font:600 14px/1.5 "Yu Gothic",Meiryo,sans-serif;
+    cursor:pointer;
+    white-space:nowrap
+}
+
+.button:hover {
+    background:#10539d;
+    border-color:#10539d
+}
+
+.button.secondary {
+    background:white;
+    color:var(--blue)
+}
+
+.button.secondary:hover {
+    background:#edf5ff
+}
+
+.button.small {
+    padding:7px 12px;
+    min-height:36px;
+    font-size:12px
+}
+
+.full {
+    width:100%;
+    margin-top:6px
+}
+
+.notice {
+    padding:14px 18px;
+    border-radius:7px;
+    margin-bottom:24px
+}
+
+.success {
+    background:#e9f6ef;
+    color:#235c41;
+    border:1px solid #b8decb
+}
+
+.field-error {
+    color:#b42332;
+    font-size:13px;
+    margin:7px 0 0
+}
+
+.search-row {
+    display:flex;
+    gap:12px
+}
+
+.search-row input {
+    flex:1;
+    min-width:0
+}
+
+.results {
+    margin-top:32px
+}
+
+.count {
+    font-size:13px;
+    font-weight:400;
+    color:var(--muted);
+    margin-left:10px
+}
+
+.table-wrap {
+    overflow-x:auto;
+    background:white;
+    border:1px solid var(--line);
+    border-radius:8px
+}
+
+table {
+    width:100%;
+    border-collapse:collapse;
+    text-align:left;
+    font-size:13px
+}
+
+th {
+    background:#edf3f9;
+    color:#526980;
+    font-weight:600
+}
+
+td,th {
+    padding:16px;
+    border-bottom:1px solid var(--line);
+    vertical-align:top
+}
+
+tbody:last-child tr:last-child td {
+    border-bottom:0
+}
+
+.patient-name {
+    font-weight:600
+}
+
+.actions {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap
+}
+
+.back {
+    display:inline-block;
+    margin-top:28px;
+    text-decoration:none;
+    font-size:14px
+}
+
+.empty {
+    background:white;
+    border:1px dashed #c6d5e4;
+    padding:46px 24px;
+    text-align:center;
+    border-radius:8px;
+    color:var(--muted)
+}
+
+.patient-summary {
+    display:flex;
+    gap:42px;
+    padding:20px 24px;
+    background:#eaf2fb;
+    border-left:4px solid var(--blue);
+    margin-bottom:28px;
+    border-radius:5px
+}
+
+.patient-summary>div {
+    display:flex;
+    flex-direction:column;
+    gap:4px
+}
+
+.patient-summary .muted {
+    font-size:12px
+}
+
+.patient-summary strong {
+    font-size:19px
+}
+
+.form-panel {
+    max-width:800px;
+    margin:auto
+}
+
+.form-grid {
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:0 24px
+}
+
+.heading-row {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px
+}
+
+.history-table {
+    min-width:1080px
+}
+
+.wrap {
+    min-width:120px;
+    max-width:210px;
+    overflow-wrap:anywhere
+}
+
+.preserve {
+    white-space:pre-wrap;
+    overflow-wrap:anywhere
+}
+
+details summary {
+    cursor:pointer;
+    color:var(--blue);
+    white-space:nowrap
+}
+
+.detail {
+    width:240px;
+    max-width:100%;
+    white-space:normal;
+    overflow-wrap:anywhere
+}
+
+.detail dt {
+    font-weight:600;
+    margin-top:10px
+}
+
+.detail dd {
+    margin-left:0
+}
+
+.error-panel {
+    max-width:760px;
+    margin:40px auto
+}
+
+.sr-only {
+    position:absolute;
+    width:1px;
+    height:1px;
+    overflow:hidden;
+    clip:rect(0,0,0,0)
+}
+
+footer {
+    max-width:1080px;
+    margin:auto;
+    border-top:1px solid var(--line);
+    padding:22px 0;
+    color:var(--muted);
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    font-size:12px
+}
+
+footer p {
+    margin:0
+}
+
+@media(max-width:700px) {
+    .header-inner {
+    padding:18px 20px
+}
+
+.brand {
+    font-size:17px
+}
+
+.environment {
+    font-size:10px
+}
+
+nav {
+    padding:14px 20px;
+    gap:22px;
+    overflow-x:auto
+}
+
+nav a {
+    font-size:12px
+}
+
+main {
+    padding:28px 20px 40px
+}
+
+h1 {
+    font-size:23px
+}
+
+.home-layout {
+    grid-template-columns:1fr;
+    gap:15px
+}
+
+.panel {
+    padding:24px 20px
+}
+
+.workflow {
+    padding-top:12px
+}
+
+.form-grid {
+    grid-template-columns:1fr
+}
+
+.heading-row {
+    align-items:flex-start;
+    flex-direction:column
+}
+
+.patient-summary {
+    gap:18px;
+    flex-wrap:wrap;
+    padding:18px
+}
+
+.patient-summary strong {
+    font-size:17px
+}
+
+.search-row {
+    flex-wrap:wrap
+}
+
+.search-row .button {
+    padding:10px 16px
+}
+
+td,th {
+    padding:12px
+}
+
+footer {
+    margin:0 20px;
+    flex-direction:column;
+    gap:5px
+}
+
+.error-panel h1 {
+    font-size:22px
+}
+
+
+}
+
+
+
+.history-table th, .history-table td:first-child  {
+     white-space: nowrap;
+}
+
+
