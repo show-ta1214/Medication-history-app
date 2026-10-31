@@ -111,6 +111,27 @@ class ApplicationIntegrationTest {
         }
         assertThat(histories.count()).isZero();
     }
+    @Test void multipleMedicinesAreSavedAndInvalidAdditionalNamesArePreserved() throws Exception {
+        Patient p = patient("追加薬剤テスト");
+        String url = "/patients/" + p.getId() + "/medications";
+        mvc.perform(post(url).param("prescriptionDate", "2026-01-02").param("medicineName", "薬A")
+            .param("additionalMedicineNames[0]", "薬B").param("additionalMedicineNames[1]", "薬C")
+            .param("usage", "毎食後").param("dosage", "1錠").param("durationDays", "7")
+            .param("guidance", "食後に服用"))
+            .andExpect(redirectedUrl(url));
+        assertThat(histories.findByPatientIdOrderByPrescriptionDateDescIdDesc(p.getId()))
+            .extracting(MedicationHistory::getMedicineName).containsExactlyInAnyOrder("薬A", "薬B", "薬C");
+        for (String invalid : new String[]{"  ", "a".repeat(201)}) {
+            mvc.perform(post(url).param("prescriptionDate", "2026-01-02").param("medicineName", "薬A")
+                .param("additionalMedicineNames[0]", "薬B").param("additionalMedicineNames[1]", invalid)
+                .param("usage", "毎食後").param("dosage", "1錠").param("durationDays", "7")
+                .param("guidance", "食後に服用"))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeHasFieldErrors("medicationHistoryForm", "additionalMedicineNames[1]"))
+                .andExpect(content().string(containsString("value=\"薬B\"")));
+        }
+        assertThat(histories.findByPatientIdOrderByPrescriptionDateDescIdDesc(p.getId())).hasSize(3);
+    }
     @Test void consoleIsDisabledByDefault() throws Exception {
         mvc.perform(get("/h2-console/")).andExpect(status().isNotFound());
     }

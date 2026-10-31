@@ -203,6 +203,14 @@ label {
     margin-bottom:22px
 }
 
+.additional-medicine {
+    margin:16px 0
+}
+
+#add-medicine {
+    margin-top:12px
+}
+
 .required,.muted {
     font-weight:400;
     color:var(--muted)

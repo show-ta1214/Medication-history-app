@@ -48,6 +48,18 @@
               <input id="medicineName" type="text" th:field="*{medicineName}" maxlength="200" required>
               <p class="field-error" th:if="${#fields.hasErrors('medicineName')}" th:errors="*{medicineName}">
               </p>
+              <div id="additional-medicines">
+                <div class="additional-medicine" th:each="medicine, item : *{additionalMedicineNames}">
+                  <label th:for="${'additionalMedicineNames' + item.index}">追加の薬剤名 <span class="required">必須</span></label>
+                  <div class="search-row">
+                    <input type="text" th:field="*{additionalMedicineNames[__${item.index}__]}" maxlength="200" required>
+                    <button class="button secondary small" type="button" data-remove-medicine>削除</button>
+                  </div>
+                  <p class="field-error" th:if="${#fields.hasErrors('additionalMedicineNames[' + item.index + ']')}" th:errors="*{additionalMedicineNames[__${item.index}__]}"></p>
+                </div>
+              </div>
+              <button class="button secondary small" type="button" id="add-medicine">＋ 薬剤名を追加</button>
+              <p class="muted">用法・用量・服用日数・服薬指導内容・備考は、入力したすべての薬剤に共通です。</p>
             </div>
             <div class="field">
               <label for="usage">

@@ -18,7 +18,11 @@ public class MedicationHistoryService {
     }
     @Transactional
     public void register(Long patientId, MedicationHistoryForm form) {
-        repository.save(new MedicationHistory(patients.find(patientId), form));
+        var patient = patients.find(patientId);
+        repository.save(new MedicationHistory(patient, form));
+        for (String medicineName : form.getAdditionalMedicineNames()) {
+            repository.save(new MedicationHistory(patient, form, medicineName));
+        }
     }
     public List<MedicationHistory> findByPatient(Long patientId) {
         return repository.findByPatientIdOrderByPrescriptionDateDescIdDesc(patientId);

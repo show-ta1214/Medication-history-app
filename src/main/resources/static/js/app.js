@@ -10,9 +10,51 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     // 空白のみの必須文字列を送信する前に通知します。
-    document.querySelectorAll('input[required][type="text"], textarea[required]').forEach(input => {
+    const validateRequiredText = input => {
         const validate = () => input.setCustomValidity(input.value.trim() ? '' : '空白以外の文字を入力してください');
         input.addEventListener('input', validate);
         input.addEventListener('invalid', validate);
-    });
+    };
+    document.querySelectorAll('input[required][type="text"], textarea[required]').forEach(validateRequiredText);
+
+    const medicines = document.getElementById('additional-medicines');
+    const addMedicine = document.getElementById('add-medicine');
+    if (medicines && addMedicine) {
+        const reindex = () => medicines.querySelectorAll('.additional-medicine').forEach((row, index) => {
+            const input = row.querySelector('input');
+            input.name = `additionalMedicineNames[${index}]`;
+            input.id = `additionalMedicineNames${index}`;
+            row.querySelector('label').htmlFor = input.id;
+        });
+        addMedicine.addEventListener('click', () => {
+            const row = document.createElement('div');
+            row.className = 'additional-medicine';
+            const label = document.createElement('label');
+            label.textContent = '追加の薬剤名（必須）';
+            const controls = document.createElement('div');
+            controls.className = 'search-row';
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.maxLength = 200;
+            input.required = true;
+            validateRequiredText(input);
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'button secondary small';
+            remove.dataset.removeMedicine = '';
+            remove.textContent = '削除';
+            controls.append(input, remove);
+            row.append(label, controls);
+            medicines.append(row);
+            reindex();
+            input.focus();
+        });
+        medicines.addEventListener('click', event => {
+            const remove = event.target.closest('[data-remove-medicine]');
+            if (!remove) return;
+            remove.closest('.additional-medicine').remove();
+            reindex();
+            addMedicine.focus();
+        });
+    }
 });

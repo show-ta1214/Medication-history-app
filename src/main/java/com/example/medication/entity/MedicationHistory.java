@@ -29,9 +29,12 @@ public class MedicationHistory {
 
     protected MedicationHistory() { }
     public MedicationHistory(Patient patient, MedicationHistoryForm form) {
+        this(patient, form, form.getMedicineName());
+    }
+    public MedicationHistory(Patient patient, MedicationHistoryForm form, String medicineName) {
         this.patient = patient;
         this.prescriptionDate = form.getPrescriptionDate();
-        this.medicineName = form.getMedicineName();
+        this.medicineName = medicineName;
         this.usage = form.getUsage();
         this.dosage = form.getDosage();
         this.durationDays = form.getDurationDays();
