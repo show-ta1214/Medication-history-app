@@ -13,8 +13,8 @@ public class MedicationHistoryForm {
     @NotBlank(message = "薬剤名を入力してください")
     @Size(max = 200, message = "薬剤名は200文字以内で入力してください")
     private String medicineName;
-    private List<@NotBlank(message = "薬剤名を入力してください")
-        @Size(max = 200, message = "薬剤名は200文字以内で入力してください") String> additionalMedicineNames = new ArrayList<>();
+    @jakarta.validation.Valid
+    private List<AdditionalMedicineForm> additionalMedicines = new ArrayList<>();
     @NotBlank(message = "用法を入力してください")
     @Size(max = 200, message = "用法は200文字以内で入力してください")
     private String usage;
@@ -33,8 +33,8 @@ public class MedicationHistoryForm {
     public LocalDate getPrescriptionDate() { return prescriptionDate; }
     public void setPrescriptionDate(LocalDate prescriptionDate) { this.prescriptionDate = prescriptionDate; }
     public String getMedicineName() { return medicineName; }
-    public List<String> getAdditionalMedicineNames() { return additionalMedicineNames; }
-    public void setAdditionalMedicineNames(List<String> additionalMedicineNames) { this.additionalMedicineNames = additionalMedicineNames; }
+    public List<AdditionalMedicineForm> getAdditionalMedicines() { return additionalMedicines; }
+    public void setAdditionalMedicines(List<AdditionalMedicineForm> additionalMedicines) { this.additionalMedicines = additionalMedicines; }
     public void setMedicineName(String medicineName) { this.medicineName = medicineName; }
     public String getUsage() { return usage; }
     public void setUsage(String usage) { this.usage = usage; }

@@ -48,18 +48,6 @@
               <input id="medicineName" type="text" th:field="*{medicineName}" maxlength="200" required>
               <p class="field-error" th:if="${#fields.hasErrors('medicineName')}" th:errors="*{medicineName}">
               </p>
-              <div id="additional-medicines">
-                <div class="additional-medicine" th:each="medicine, item : *{additionalMedicineNames}">
-                  <label th:for="${'additionalMedicineNames' + item.index}">追加の薬剤名 <span class="required">必須</span></label>
-                  <div class="search-row">
-                    <input type="text" th:field="*{additionalMedicineNames[__${item.index}__]}" maxlength="200" required>
-                    <button class="button secondary small" type="button" data-remove-medicine>削除</button>
-                  </div>
-                  <p class="field-error" th:if="${#fields.hasErrors('additionalMedicineNames[' + item.index + ']')}" th:errors="*{additionalMedicineNames[__${item.index}__]}"></p>
-                </div>
-              </div>
-              <button class="button secondary small" type="button" id="add-medicine">＋ 薬剤名を追加</button>
-              <p class="muted">用法・用量・服用日数・服薬指導内容・備考は、入力したすべての薬剤に共通です。</p>
             </div>
             <div class="field">
               <label for="usage">
@@ -95,6 +83,36 @@
               </p>
             </div>
           </div>
+          <div id="additional-medicines">
+            <fieldset class="additional-medicine" th:each="medicine, item : *{additionalMedicines}">
+              <legend>追加の薬剤</legend>
+              <div class="form-grid">
+                <div class="field">
+                  <label th:for="|additionalMedicines${item.index}.medicineName|">薬剤名<span class="required">必須</span></label>
+                  <input type="text" data-medicine-field="medicineName" th:field="*{additionalMedicines[__${item.index}__].medicineName}" maxlength="200" required>
+                  <p class="field-error" th:if="${#fields.hasErrors('additionalMedicines[' + item.index + '].medicineName')}" th:errors="*{additionalMedicines[__${item.index}__].medicineName}"></p>
+                </div>
+                <div class="field">
+                  <label th:for="|additionalMedicines${item.index}.usage|">用法<span class="required">必須</span></label>
+                  <input type="text" data-medicine-field="usage" th:field="*{additionalMedicines[__${item.index}__].usage}" maxlength="200" required>
+                  <p class="field-error" th:if="${#fields.hasErrors('additionalMedicines[' + item.index + '].usage')}" th:errors="*{additionalMedicines[__${item.index}__].usage}"></p>
+                </div>
+                <div class="field">
+                  <label th:for="|additionalMedicines${item.index}.dosage|">用量<span class="required">必須</span></label>
+                  <input type="text" data-medicine-field="dosage" th:field="*{additionalMedicines[__${item.index}__].dosage}" maxlength="100" required>
+                  <p class="field-error" th:if="${#fields.hasErrors('additionalMedicines[' + item.index + '].dosage')}" th:errors="*{additionalMedicines[__${item.index}__].dosage}"></p>
+                </div>
+                <div class="field">
+                  <label th:for="|additionalMedicines${item.index}.durationDays|">服用日数<span class="required">必須</span></label>
+                  <input type="number" data-medicine-field="durationDays" th:field="*{additionalMedicines[__${item.index}__].durationDays}" min="1" step="1" max="2147483647" required>
+                  <p class="field-error" th:if="${#fields.hasErrors('additionalMedicines[' + item.index + '].durationDays')}" th:errors="*{additionalMedicines[__${item.index}__].durationDays}"></p>
+                </div>
+              </div>
+              <button class="button secondary small" type="button" data-remove-medicine>削除</button>
+            </fieldset>
+          </div>
+          <button class="button secondary small" type="button" id="add-medicine">＋ 薬剤・用法・用量・服用日数を追加</button>
+          <p class="muted">処方日・服薬指導内容・備考は、入力したすべての薬剤に共通です。</p>
           <div class="field">
             <label for="guidance">
               服薬指導内容

@@ -21,33 +21,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const addMedicine = document.getElementById('add-medicine');
     if (medicines && addMedicine) {
         const reindex = () => medicines.querySelectorAll('.additional-medicine').forEach((row, index) => {
-            const input = row.querySelector('input');
-            input.name = `additionalMedicineNames[${index}]`;
-            input.id = `additionalMedicineNames${index}`;
-            row.querySelector('label').htmlFor = input.id;
+            row.querySelectorAll('[data-medicine-field]').forEach(input => {
+                input.name = `additionalMedicines[${index}].${input.dataset.medicineField}`;
+                input.id = `additionalMedicines${index}.${input.dataset.medicineField}`;
+                input.closest('.field').querySelector('label').htmlFor = input.id;
+            });
         });
         addMedicine.addEventListener('click', () => {
-            const row = document.createElement('div');
+            const row = document.createElement('fieldset');
             row.className = 'additional-medicine';
-            const label = document.createElement('label');
-            label.textContent = '追加の薬剤名（必須）';
+            const legend = document.createElement('legend');
+            legend.textContent = '追加の薬剤';
             const controls = document.createElement('div');
-            controls.className = 'search-row';
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.maxLength = 200;
-            input.required = true;
-            validateRequiredText(input);
+            controls.className = 'form-grid';
+            for (const [name, title, maxLength] of [
+                ['medicineName', '薬剤名', 200], ['usage', '用法', 200],
+                ['dosage', '用量', 100], ['durationDays', '服用日数', null]
+            ]) {
+                const field = document.createElement('div');
+                field.className = 'field';
+                const label = document.createElement('label');
+                label.textContent = `${title}（必須）`;
+                const input = document.createElement('input');
+                input.dataset.medicineField = name;
+                input.required = true;
+                input.type = maxLength ? 'text' : 'number';
+                if (maxLength) {
+                    input.maxLength = maxLength;
+                    validateRequiredText(input);
+                } else {
+                    input.min = '1';
+                    input.max = '2147483647';
+                    input.step = '1';
+                }
+                field.append(label, input);
+                controls.append(field);
+            }
             const remove = document.createElement('button');
             remove.type = 'button';
             remove.className = 'button secondary small';
             remove.dataset.removeMedicine = '';
             remove.textContent = '削除';
-            controls.append(input, remove);
-            row.append(label, controls);
+            row.append(legend, controls, remove);
             medicines.append(row);
             reindex();
-            input.focus();
+            row.querySelector('input').focus();
         });
         medicines.addEventListener('click', event => {
             const remove = event.target.closest('[data-remove-medicine]');

@@ -20,8 +20,16 @@ public class MedicationHistoryService {
     public void register(Long patientId, MedicationHistoryForm form) {
         var patient = patients.find(patientId);
         repository.save(new MedicationHistory(patient, form));
-        for (String medicineName : form.getAdditionalMedicineNames()) {
-            repository.save(new MedicationHistory(patient, form, medicineName));
+        for (var medicine : form.getAdditionalMedicines()) {
+            var history = new MedicationHistoryForm();
+            history.setPrescriptionDate(form.getPrescriptionDate());
+            history.setMedicineName(medicine.getMedicineName());
+            history.setUsage(medicine.getUsage());
+            history.setDosage(medicine.getDosage());
+            history.setDurationDays(medicine.getDurationDays());
+            history.setGuidance(form.getGuidance());
+            history.setNotes(form.getNotes());
+            repository.save(new MedicationHistory(patient, history));
         }
     }
     public List<MedicationHistory> findByPatient(Long patientId) {

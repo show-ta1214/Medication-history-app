@@ -115,22 +115,51 @@ class ApplicationIntegrationTest {
         Patient p = patient("追加薬剤テスト");
         String url = "/patients/" + p.getId() + "/medications";
         mvc.perform(post(url).param("prescriptionDate", "2026-01-02").param("medicineName", "薬A")
-            .param("additionalMedicineNames[0]", "薬B").param("additionalMedicineNames[1]", "薬C")
+            .param("additionalMedicines[0].medicineName", "薬B").param("additionalMedicines[1].medicineName", "薬C")
             .param("usage", "毎食後").param("dosage", "1錠").param("durationDays", "7")
-            .param("guidance", "食後に服用"))
+            .param("additionalMedicines[0].usage", "就寝前").param("additionalMedicines[0].dosage", "2錠").param("additionalMedicines[0].durationDays", "14")
+                .param("additionalMedicines[1].usage", "朝食後").param("additionalMedicines[1].dosage", "3錠").param("additionalMedicines[1].durationDays", "21")
+                .param("guidance", "食後に服用"))
             .andExpect(redirectedUrl(url));
         assertThat(histories.findByPatientIdOrderByPrescriptionDateDescIdDesc(p.getId()))
             .extracting(MedicationHistory::getMedicineName).containsExactlyInAnyOrder("薬A", "薬B", "薬C");
+        assertThat(histories.findByPatientIdOrderByPrescriptionDateDescIdDesc(p.getId()))
+            .filteredOn(history -> history.getMedicineName().equals("薬B"))
+            .singleElement().satisfies(history -> {
+                assertThat(history.getUsage()).isEqualTo("就寝前");
+                assertThat(history.getDosage()).isEqualTo("2錠");
+                assertThat(history.getDurationDays()).isEqualTo(14);
+            });
         for (String invalid : new String[]{"  ", "a".repeat(201)}) {
             mvc.perform(post(url).param("prescriptionDate", "2026-01-02").param("medicineName", "薬A")
-                .param("additionalMedicineNames[0]", "薬B").param("additionalMedicineNames[1]", invalid)
+                .param("additionalMedicines[0].medicineName", "薬B").param("additionalMedicines[1].medicineName", invalid)
                 .param("usage", "毎食後").param("dosage", "1錠").param("durationDays", "7")
+                .param("additionalMedicines[0].usage", "就寝前").param("additionalMedicines[0].dosage", "2錠").param("additionalMedicines[0].durationDays", "14")
+                .param("additionalMedicines[1].usage", "朝食後").param("additionalMedicines[1].dosage", "3錠").param("additionalMedicines[1].durationDays", "21")
                 .param("guidance", "食後に服用"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeHasFieldErrors("medicationHistoryForm", "additionalMedicineNames[1]"))
+                .andExpect(model().attributeHasFieldErrors("medicationHistoryForm", "additionalMedicines[1].medicineName"))
                 .andExpect(content().string(containsString("value=\"薬B\"")));
         }
         assertThat(histories.findByPatientIdOrderByPrescriptionDateDescIdDesc(p.getId())).hasSize(3);
+    }
+    @Test void invalidAdditionalMedicineDetailsAreRejectedAndRetained() throws Exception {
+        String url = "/patients/" + patient("追加入力検証").getId() + "/medications";
+        for (String days : new String[]{"", "0", "-1", "1.5", "abc", "2147483648"}) {
+            mvc.perform(post(url).param("prescriptionDate", "2026-01-02").param("medicineName", "薬A")
+                .param("usage", "毎食後").param("dosage", "1錠").param("durationDays", "7")
+                .param("guidance", "服薬指導")
+                .param("additionalMedicines[0].medicineName", "薬B")
+                .param("additionalMedicines[0].usage", " ")
+                .param("additionalMedicines[0].dosage", "a".repeat(101))
+                .param("additionalMedicines[0].durationDays", days))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeHasFieldErrors("medicationHistoryForm",
+                    "additionalMedicines[0].usage", "additionalMedicines[0].dosage",
+                    "additionalMedicines[0].durationDays"))
+                .andExpect(content().string(containsString("value=\"薬B\"")));
+        }
+        assertThat(histories.count()).isZero();
     }
     @Test void consoleIsDisabledByDefault() throws Exception {
         mvc.perform(get("/h2-console/")).andExpect(status().isNotFound());
